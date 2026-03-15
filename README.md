@@ -6,11 +6,11 @@ A portable skill pack for AI coding agents. Consolidates battle-tested architect
 
 ```bash
 # Option A: Git submodule (recommended for teams)
-git submodule add https://github.com/modh/agent-skills .agents/modh-skills
+git submodule add https://github.com/modh-labs/agent-skills .agents/modh-skills
 ./.agents/modh-skills/install.sh
 
 # Option B: Clone (simpler for solo work)
-git clone https://github.com/modh/agent-skills /tmp/modh-skills
+git clone https://github.com/modh-labs/agent-skills /tmp/modh-skills
 /tmp/modh-skills/install.sh --target .
 ```
 
