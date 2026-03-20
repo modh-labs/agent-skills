@@ -4,7 +4,7 @@
 
 This is the engineering playbook we use every day. It started as a collection of agent skills — reusable rules that teach AI coding assistants how we write code. But the patterns behind those skills are more valuable than the skills themselves. So we wrote them down.
 
-24 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 18 AI agent skills that enforce these patterns automatically in your editor.
+25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 20 AI agent skills that enforce these patterns automatically in your editor.
 
 ## Quick Start
 
@@ -49,6 +49,7 @@ How we keep code correct. Types catch bugs at compile time. Tests catch bugs at 
 | [Testing Strategy](chapters/03-quality/testing-strategy.md) | Vitest for units, Playwright for flows, mocks for Supabase |
 | [CI Pipeline](chapters/03-quality/ci-pipeline.md) | Cheapest checks first, no deploy in CI, fail fast |
 | [Code Quality Audit](chapters/03-quality/code-quality-audit.md) | Detect parallel systems, delete dead code, validate against production |
+| [Code Review](chapters/03-quality/code-review.md) | Seven dimensions, educational feedback, severity classification |
 
 ### 4. Security
 
