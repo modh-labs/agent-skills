@@ -231,19 +231,44 @@ Aggregate all findings across all files. Apply verdict rules.
 
 **Terminal (all modes):** Print formatted report with findings grouped by dimension, then verdict.
 
-**GitHub (PR modes):** Post as a single PR review via `gh api`:
+**GitHub (PR modes):** Two-part output — a review body AND inline line comments.
+
+#### 5a. Post the review body
+
+Post the verdict summary as the review body via `gh api`:
 
 ```bash
 gh api repos/{owner}/{repo}/pulls/{pr}/reviews \
   --method POST \
   -f body="<verdict summary>" \
-  -f event="REQUEST_CHANGES" \
-  -f 'comments=[{"path":"file.ts","line":45,"body":"finding"}]'
+  -f event="REQUEST_CHANGES"
 ```
 
 Use `REQUEST_CHANGES` when verdict is CHANGES REQUESTED, `APPROVE` when APPROVED, `COMMENT` when NEEDS DISCUSSION.
 
-**Max 15 inline comments per PR.** Group related findings if there are more.
+#### 5b. Post inline line comments (REQUIRED for PR modes)
+
+**Always post inline comments on the specific lines that need attention.** This is not optional — the review body alone is not actionable enough. Developers need to see findings pinned to the exact code they need to change.
+
+For each Critical and Important finding, post a standalone line comment:
+
+```bash
+gh api repos/{owner}/{repo}/pulls/{pr}/comments \
+  --method POST \
+  -f body="<finding with severity, explanation, and fix>" \
+  -f path="<file path relative to repo root>" \
+  -F line=<line number in the new version of the file> \
+  -f commit_id="<head commit SHA>" \
+  -f side="RIGHT"
+```
+
+Get the head commit SHA: `gh pr view {pr} --json headRefOid -q .headRefOid`
+
+Rules:
+- **Critical + Important findings:** Always post inline comments (these are actionable)
+- **Advisory findings:** Summarize in the review body only (don't clutter the diff with non-blocking items)
+- **Max 15 inline comments per PR.** Group related findings if there are more
+- Use the diff to find exact line numbers in the new version of each file
 
 ---
 
