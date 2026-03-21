@@ -97,7 +97,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 
 ## Agent Skills
 
-20 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
+28 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
 
 ### Tier 1: Universal (Any Stack, Any Language)
 
@@ -116,6 +116,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`react-architecture`](skills/react-architecture/) | Components >300 lines, >15 useState, decomposition work | Hook extraction, state machines, hydration safety, composition patterns, React 19 APIs |
 | [`nextjs-patterns`](skills/nextjs-patterns/) | Data fetching, mutations, loading states | Server Components, Suspense boundaries, server actions with Zod, cache invalidation, prefetching |
 | [`shadcn-components`](skills/shadcn-components/) | Creating UI components | shadcn/ui rules, CSS variables over hardcoded colors, Sheet toggle pattern, detail view architecture |
+| [`nextjs-server-client-boundary`](skills/nextjs-server-client-boundary/) | Client components importing server modules, Storybook/test build failures | Enforces server/client module boundary — client imports actions, never repositories |
 
 ### Tier 3: Backend / Infrastructure
 
@@ -125,6 +126,12 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`observability`](skills/observability/) | Adding logging, error tracking, tracing | Structured logger factory, Sentry integration, domain capture functions, webhook observability |
 | [`write-criticality`](skills/write-criticality/) | Adding error handling for DB writes, retry logic | Three-tier write classification (tracking/retriable/critical), transient retry, alarm severity matching |
 | [`webhook-architecture`](skills/webhook-architecture/) | Creating webhook handlers | SOLID handler registry, one handler per event, dependency injection, idempotency |
+| [`webhook-patterns`](skills/webhook-patterns/) | Creating webhook routes, adding event handlers | Registry pattern, SRP route handlers, Zod validation, organization resolution service |
+| [`webhook-observability`](skills/webhook-observability/) | Adding logging/tracing to webhooks | Webhook logger lifecycle, duration tracking, idempotency checks, error tracker integration |
+| [`graphql-patterns`](skills/graphql-patterns/) | Adding GraphQL types, mutations, DataLoaders | Shopify-style graph-first design, Relay pagination, semantic types, N+1 prevention |
+| [`datetime-patterns`](skills/datetime-patterns/) | Formatting dates, sending emails with times | Explicit timezone formatting, date boundary bug prevention, multi-recipient email patterns |
+| [`hono-patterns`](skills/hono-patterns/) | Building Hono REST/GraphQL APIs | CLI workflow, middleware patterns, Zod validation, request testing without server startup |
+| [`monorepo-patterns`](skills/monorepo-patterns/) | Configuring Turborepo, creating packages, CI | Task pipelines, caching strategies, --affected builds, package boundaries, transit nodes |
 | [`security-and-compliance`](skills/security-and-compliance/) | New tables, auth flows, input validation | RLS enforcement, Zod at boundaries, webhook signatures, GDPR consent, SOC 2 checklist |
 | [`testing`](skills/testing/) | Writing tests | Vitest patterns, Supabase mocking, Playwright page objects, `__tests__/` conventions |
 | [`code-quality-audit`](skills/code-quality-audit/) | Auditing routes/modules for quality | Detect parallel systems, SOLID compliance, dead code removal, production data validation |
@@ -138,6 +145,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`linear-tickets`](skills/linear-tickets/) | Creating issues or tickets | Rich tickets with user stories, architecture context, acceptance criteria, sub-task breakdown |
 | [`pull-request`](skills/pull-request/) | Creating PRs | CI validation first, rich descriptions with summary + test plan |
 | [`ci-pipeline`](skills/ci-pipeline/) | Modifying CI/CD | CI checks only (no deploy), cheapest-first ordering, extensible step pattern |
+| [`documentation-architecture`](skills/documentation-architecture/) | Adding features, creating docs, organizing knowledge | Three-layer system (README + AGENTS.md + CLAUDE.md), JSDoc tiers, cross-editor compatibility |
 | [`route-colocation`](skills/route-colocation/) | Creating routes, organizing files | Colocate with routes, share at 3+ usages, actions folder pattern |
 
 ---
