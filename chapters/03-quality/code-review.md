@@ -316,8 +316,9 @@ The review skill is most powerful when it runs automatically on every pull reque
 1. PR is opened or updated
 2. CI triggers the review skill with the diff as input
 3. The skill analyzes changes across all seven dimensions
-4. Results are posted as PR comments (one comment per finding, threaded)
-5. A summary comment with the verdict is posted at the top
+4. A summary review with the verdict is posted as the review body
+5. Each Critical and Important finding is posted as an **inline comment on the exact line** that needs to change -- not as threaded replies, but as line-pinned comments visible directly in the diff view
+6. Advisory findings are summarized in the review body only (to avoid cluttering the diff with non-blocking suggestions)
 
 The key design decision: **the AI review is advisory, not blocking.** It posts findings and a verdict, but a human reviewer makes the final merge decision. This keeps the team in control while ensuring every PR gets a thorough, consistent review -- even when the senior engineers are busy.
 
