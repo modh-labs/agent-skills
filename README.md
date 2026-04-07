@@ -4,7 +4,7 @@
 
 This is the engineering playbook we use every day. It started as a collection of agent skills — reusable rules that teach AI coding assistants how we write code. But the patterns behind those skills are more valuable than the skills themselves. So we wrote them down.
 
-25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 20 AI agent skills that enforce these patterns automatically in your editor.
+25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 21 AI agent skills that enforce these patterns automatically in your editor.
 
 ## Quick Start
 
@@ -134,6 +134,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`monorepo-patterns`](skills/monorepo-patterns/) | Configuring Turborepo, creating packages, CI | Task pipelines, caching strategies, --affected builds, package boundaries, transit nodes |
 | [`security-and-compliance`](skills/security-and-compliance/) | New tables, auth flows, input validation | RLS enforcement, Zod at boundaries, webhook signatures, GDPR consent, SOC 2 checklist |
 | [`testing`](skills/testing/) | Writing tests | Vitest patterns, Supabase mocking, Playwright page objects, `__tests__/` conventions |
+| [`e2e-testability`](skills/e2e-testability/) | Writing e2e tests, building UI components | Semantic locators (getByRole first), accessible names, flaky test elimination, Page Object fixtures |
 | [`code-quality-audit`](skills/code-quality-audit/) | Auditing routes/modules for quality | Detect parallel systems, SOLID compliance, dead code removal, production data validation |
 
 ### Tier 4: Workflow / Process

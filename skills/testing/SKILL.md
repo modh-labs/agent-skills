@@ -198,6 +198,87 @@ describe("updateOrderStatusAction (integration)", () => {
 
 ## Mocking Patterns
 
+### Universal Server Action Test Template
+
+Follow this exact structure for every server action test file. The key insight: **hoist mocks before `vi.mock` calls**, and **import the action AFTER all mocks are registered**.
+
+```typescript
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+// 1. Hoist mocks (these run BEFORE vi.mock factory functions)
+const mockAuth = vi.hoisted(() =>
+  vi.fn(() => Promise.resolve({
+    userId: "user_test_123",
+    orgId: "org_test_456",
+    orgRole: "org:admin",
+  } as Record<string, unknown>)),
+);
+const mockRepository = vi.hoisted(() => vi.fn());
+
+// 2. Mock dependencies (order matters)
+vi.mock("@/lib/auth", () => ({ auth: mockAuth }));
+vi.mock("@/lib/traced-action", () => ({
+  tracedAction: (_name: string, fn: unknown) => fn,
+}));
+vi.mock("@/lib/captures/domain", () => ({
+  captureDomainException: vi.fn(),
+}));
+vi.mock("@/lib/logger", () => ({
+  createModuleLogger: () => ({
+    info: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn(),
+  }),
+}));
+vi.mock("next/cache", () => ({
+  revalidatePath: vi.fn(),
+  revalidateTag: vi.fn(),
+}));
+
+// 3. Import AFTER mocks (dynamic resolution picks up mocked modules)
+import { actionUnderTest } from "../action-file";
+
+// 4. Structured test body
+describe("actionUnderTest", () => {
+  beforeEach(() => { vi.clearAllMocks(); });
+
+  describe("auth", () => {
+    it("returns error when unauthorized", async () => {
+      mockAuth.mockResolvedValueOnce({ userId: null, orgId: null });
+      const result = await actionUnderTest({ id: "123" });
+      expect(result.error).toBeDefined();
+    });
+  });
+
+  describe("validation", () => {
+    it("returns error for invalid input", async () => {
+      const result = await actionUnderTest({ id: "" });
+      expect(result.error).toBeDefined();
+    });
+  });
+
+  describe("happy path", () => {
+    it("succeeds with valid input", async () => {
+      mockRepository.mockResolvedValueOnce({ id: "123", status: "active" });
+      const result = await actionUnderTest({ id: "123" });
+      expect(result.success).toBe(true);
+    });
+  });
+
+  describe("error handling", () => {
+    it("captures domain exception on DB error", async () => {
+      mockRepository.mockRejectedValueOnce(new Error("DB timeout"));
+      const result = await actionUnderTest({ id: "123" });
+      expect(result.success).toBe(false);
+    });
+  });
+});
+```
+
+**Key rules:**
+- Use `as Record<string, unknown>` on auth mock returns to avoid type conflicts with auth provider types
+- Always mock `tracedAction` to pass through the function (no tracing in tests)
+- Always mock domain capture functions (prevent Sentry calls in tests)
+- Every test file has 4 describe blocks: auth, validation, happy path, error handling
+
 ### Mock Database Client (Supabase)
 
 See `references/mock-patterns.md` for the full mock implementation.
@@ -238,9 +319,28 @@ afterEach(() => {
 });
 ```
 
+### Common Mock Mistakes
+
+| Mistake | Fix |
+|---------|-----|
+| Importing action before `vi.mock` | Use `vi.hoisted()` + import after mocks |
+| Missing `tracedAction` mock | Tracing wrapper calls error tracker on errors |
+| Missing `captureException` mock | Domain capture tries to call error tracker |
+| Auth mock returns typed object | Use `as Record<string, unknown>` to avoid type conflicts |
+| Not clearing mocks between tests | Always `vi.clearAllMocks()` in `beforeEach` |
+
 ---
 
 ## Playwright E2E Patterns
+
+> For the full guide on semantic locators, accessible UI patterns, flaky test elimination, and Page Object fixtures, see the [`e2e-testability`](../e2e-testability/) skill.
+
+### Key Rules (Summary)
+
+1. **Use `getByRole` first** — not CSS selectors or `data-testid`
+2. **Wait for data presence**, not loading-state absence
+3. **No `page.waitForTimeout()`** — use web-first assertions
+4. **Extract repeated setup** into Page Object fixtures
 
 ### Page Object Pattern
 
@@ -250,12 +350,12 @@ export class CheckoutPage {
   constructor(private page: Page) {}
 
   async fillShippingAddress(address: Address) {
-    await this.page.fill('[data-testid="street"]', address.street);
-    await this.page.fill('[data-testid="city"]', address.city);
+    await this.page.getByLabel('Street').fill(address.street);
+    await this.page.getByLabel('City').fill(address.city);
   }
 
   async submitOrder() {
-    await this.page.click('[data-testid="submit-order"]');
+    await this.page.getByRole('button', { name: 'Submit Order' }).click();
     await this.page.waitForURL(/\/confirmation/);
   }
 }
@@ -275,7 +375,7 @@ test("user can complete checkout", async ({ page }) => {
   await checkout.submitOrder();
 
   await expect(page).toHaveURL(/\/confirmation/);
-  await expect(page.locator('[data-testid="order-id"]')).toBeVisible();
+  await expect(page.getByRole('heading', { name: /Order Confirmed/ })).toBeVisible();
 });
 ```
 
