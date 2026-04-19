@@ -4,7 +4,7 @@
 
 This is the engineering playbook we use every day. It started as a collection of agent skills — reusable rules that teach AI coding assistants how we write code. But the patterns behind those skills are more valuable than the skills themselves. So we wrote them down.
 
-25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 29 AI agent skills that enforce these patterns automatically in your editor.
+25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 30 AI agent skills that enforce these patterns automatically in your editor.
 
 ## Quick Start
 
@@ -118,6 +118,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`shadcn-components`](skills/shadcn-components/) | Creating UI components | shadcn/ui rules, CSS variables over hardcoded colors, Sheet toggle pattern, detail view architecture |
 | [`nextjs-server-client-boundary`](skills/nextjs-server-client-boundary/) | Client components importing server modules, Storybook/test build failures | Enforces server/client module boundary — client imports actions, never repositories |
 | [`form-builder-rhf-isolation`](skills/form-builder-rhf-isolation/) | Dynamic form-builders in React Hook Form + shadcn (question builders, field editors, row lists) | Prevents cascade re-renders + focus loss — `useFieldArray` for READ, `setValue` for WRITE, `useWatch` by index, blur-time key regen |
+| [`debug-hmr-stale-bundle`](skills/debug-hmr-stale-bundle/) | "Module factory is not available" errors, empty-object error logs, origin-specific failures in Next.js + Turbopack dev | Diagnoses browser-side stale bundles via subdomain/incognito parity test, fixes with site-data clearing, prevents wasted hours reading red-herring stack traces |
 
 ### Tier 3: Backend / Infrastructure
 
