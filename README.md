@@ -4,7 +4,7 @@
 
 This is the engineering playbook we use every day. It started as a collection of agent skills — reusable rules that teach AI coding assistants how we write code. But the patterns behind those skills are more valuable than the skills themselves. So we wrote them down.
 
-25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 41 AI agent skills that enforce these patterns automatically in your editor.
+25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 39 AI agent skills that enforce these patterns automatically in your editor.
 
 ## Quick Start
 
@@ -97,7 +97,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 
 ## Agent Skills
 
-32 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
+39 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
 
 ### Tier 1: Universal (Any Stack, Any Language)
 
@@ -133,6 +133,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`webhook-architecture`](skills/webhook-architecture/) | Creating webhook handlers | SOLID handler registry, one handler per event, dependency injection, idempotency |
 | [`webhook-patterns`](skills/webhook-patterns/) | Creating webhook routes, adding event handlers | Registry pattern, SRP route handlers, Zod validation, organization resolution service |
 | [`webhook-observability`](skills/webhook-observability/) | Adding logging/tracing to webhooks | Webhook logger lifecycle, duration tracking, idempotency checks, error tracker integration |
+| [`auth-webhook-race`](skills/auth-webhook-race/) | Adding tables that mirror auth-provider entities (Clerk, Auth0, WorkOS, Stytch); debugging FK violations on signup; "data missing for new users" reports | Sync-on-first-touch gate in authenticated layouts so the auth provider's webhook is a refresher, not the create path. Eliminates Postgres 23503 races. Includes the ORM `error.cause` unwrap for diagnosis |
 | [`graphql-patterns`](skills/graphql-patterns/) | Adding GraphQL types, mutations, DataLoaders | Shopify-style graph-first design, Relay pagination, semantic types, N+1 prevention |
 | [`datetime-patterns`](skills/datetime-patterns/) | Formatting dates, sending emails with times | Explicit timezone formatting, date boundary bug prevention, multi-recipient email patterns |
 | [`hono-patterns`](skills/hono-patterns/) | Building Hono REST/GraphQL APIs | CLI workflow, middleware patterns, Zod validation, request testing without server startup |
@@ -155,6 +156,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`documentation-architecture`](skills/documentation-architecture/) | Adding features, creating docs, organizing knowledge | Three-layer system (README + AGENTS.md + CLAUDE.md), JSDoc tiers, cross-editor compatibility |
 | [`route-colocation`](skills/route-colocation/) | Creating routes, organizing files | Colocate with routes, share at 3+ usages, actions folder pattern |
 | [`bug-cleanup-triage`](skills/bug-cleanup-triage/) | Planning a backlog cleanup session, before dispatching research agents, umbrella tickets stuck In Progress for weeks | Three-phase framework (hygiene → investigation → fixing) with git log pre-flight, Sentry module-tag verification, and umbrella breakdown auto-detection |
+| [`verifying-commit-scope`](skills/verifying-commit-scope/) | Any `git commit` in a repo with husky/lefthook + lint-staged + auto-format `--write`, especially with concurrent unstaged work in the tree | Catches pre-commit auto-formatters silently absorbing concurrent agents' unstaged work into your commit. Run `git diff --cached --stat` before commit, `git show --stat HEAD` after, and reset cleanly when the file count doesn't match |
 
 ---
 
