@@ -4,7 +4,7 @@
 
 This is the engineering playbook we use every day. It started as a collection of agent skills — reusable rules that teach AI coding assistants how we write code. But the patterns behind those skills are more valuable than the skills themselves. So we wrote them down.
 
-25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 39 AI agent skills that enforce these patterns automatically in your editor.
+25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 40 AI agent skills that enforce these patterns automatically in your editor.
 
 ## Quick Start
 
@@ -97,7 +97,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 
 ## Agent Skills
 
-39 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
+40 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
 
 ### Tier 1: Universal (Any Stack, Any Language)
 
@@ -134,6 +134,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`webhook-patterns`](skills/webhook-patterns/) | Creating webhook routes, adding event handlers | Registry pattern, SRP route handlers, Zod validation, organization resolution service |
 | [`webhook-observability`](skills/webhook-observability/) | Adding logging/tracing to webhooks | Webhook logger lifecycle, duration tracking, idempotency checks, error tracker integration |
 | [`auth-webhook-race`](skills/auth-webhook-race/) | Adding tables that mirror auth-provider entities (Clerk, Auth0, WorkOS, Stytch); debugging FK violations on signup; "data missing for new users" reports | Sync-on-first-touch gate in authenticated layouts so the auth provider's webhook is a refresher, not the create path. Eliminates Postgres 23503 races. Includes the ORM `error.cause` unwrap for diagnosis |
+| [`webhook-temporal-guard`](skills/webhook-temporal-guard/) | Webhook payloads carrying a time the action depends on (start_time, scheduled_at, expires_at); calendar webhooks (Nylas, Google, Microsoft); Stripe refund/dispute webhooks; "we sent an email about something that already happened" reports | Validates payload time against `now()` at handler boundary AND service entry (defense in depth). Captures past-time blocks as `level: warning` (not critical) since the input is unfixable. Origin: WorldBranding 2026-05-08 — closer edited a calendar event 17 minutes after start_time, integration "rescheduled" to the past |
 | [`graphql-patterns`](skills/graphql-patterns/) | Adding GraphQL types, mutations, DataLoaders | Shopify-style graph-first design, Relay pagination, semantic types, N+1 prevention |
 | [`datetime-patterns`](skills/datetime-patterns/) | Formatting dates, sending emails with times | Explicit timezone formatting, date boundary bug prevention, multi-recipient email patterns |
 | [`hono-patterns`](skills/hono-patterns/) | Building Hono REST/GraphQL APIs | CLI workflow, middleware patterns, Zod validation, request testing without server startup |
