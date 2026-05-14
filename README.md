@@ -97,7 +97,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 
 ## Agent Skills
 
-40 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
+41 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
 
 ### Tier 1: Universal (Any Stack, Any Language)
 
@@ -122,6 +122,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`status-rollup-chip`](skills/status-rollup-chip/) | Admin tables with 6+ columns, horizontal overflow, or columns that together answer one readiness question | Collapses dense columns into one derived chip + popover-with-deep-links + row-click sheet triad; preserves one-click muscle memory for common mutations |
 | [`debug-hmr-stale-bundle`](skills/debug-hmr-stale-bundle/) | "Module factory is not available" errors, empty-object error logs, origin-specific failures in Next.js + Turbopack dev | Diagnoses browser-side stale bundles via subdomain/incognito parity test, fixes with site-data clearing, prevents wasted hours reading red-herring stack traces |
 | [`middleware-cookie-fast-path`](skills/middleware-cookie-fast-path/) | Edge-cached page needs request-scoped client data (geo, timezone, AB variant, feature flag); tracking script gated behind client-side consent check; N components firing duplicate `/api/*` requests | Stamps client-readable cookie in middleware so client reads synchronously, eliminating post-hydration fetch waterfalls — reference incident was a 34-second mobile Meta Pixel fire on Slow 3G |
+| [`navigate-before-dismiss`](skills/navigate-before-dismiss/) | Click handlers that both call `router.push` and close a Radix dismissable (Dialog/Sheet/Popover/CommandDialog/DropdownMenu); "I click the result, popup closes, URL never changes" bug reports; cmdk `asChild` + Next.js `<Link>` shapes | Reorders push-before-dismiss with `queueMicrotask` so Radix's synchronous unmount no longer cancels the intercepted Next.js navigation mid-event; collapses dual `onSelect` + `onClick` handlers via `preventDefault` while preserving anchor `href` for middle-click and copy-link |
 
 ### Tier 3: Backend / Infrastructure
 
