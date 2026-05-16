@@ -4,7 +4,7 @@
 
 This is the engineering playbook we use every day. It started as a collection of agent skills — reusable rules that teach AI coding assistants how we write code. But the patterns behind those skills are more valuable than the skills themselves. So we wrote them down.
 
-25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 42 AI agent skills that enforce these patterns automatically in your editor.
+25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 43 AI agent skills that enforce these patterns automatically in your editor.
 
 ## Quick Start
 
@@ -97,7 +97,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 
 ## Agent Skills
 
-42 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
+43 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
 
 ### Tier 1: Universal (Any Stack, Any Language)
 
@@ -147,6 +147,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`e2e-testability`](skills/e2e-testability/) | Writing e2e tests, building UI components | Semantic locators (getByRole first), accessible names, flaky test elimination, Page Object fixtures |
 | [`fix-e2e`](skills/fix-e2e/) | An e2e run has failing or skipped tests; before a release gate; after UI changes that break many specs | Four-rung triage ladder (locator drift → test bug → product bug → infra), strict skip policy, two-green-runs exit criteria — refuses retries/waitForTimeout/skip as flake-hiders |
 | [`code-quality-audit`](skills/code-quality-audit/) | Auditing routes/modules for quality | Detect parallel systems, SOLID compliance, dead code removal, production data validation |
+| [`type-cast-silent-bugs`](skills/type-cast-silent-bugs/) | Type-tightening migrations (Drizzle, ORM swap, schema rename); audits that grep for `as any` / `as unknown as` / `useState<any[]>`; "this dashboard's been silently broken for months" investigations | Reframes type-assertion casts on DB query results as silent-bug indicators rather than type-safety nits — the cast almost always hides column/table drift the type system would otherwise catch. Origin: Aura 2026-05-16 admin Drizzle sweep surfaced 11 silently-broken dashboards (calibration: ~1 silent bug per 9 casts). Includes the diagnostic question, three cast patterns to audit, and the in-scope-fix discipline that prevents follow-up-ticket erosion |
 
 ### Tier 4: Workflow / Process
 
