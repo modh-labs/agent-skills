@@ -4,7 +4,7 @@
 
 This is the engineering playbook we use every day. It started as a collection of agent skills — reusable rules that teach AI coding assistants how we write code. But the patterns behind those skills are more valuable than the skills themselves. So we wrote them down.
 
-25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 43 AI agent skills that enforce these patterns automatically in your editor.
+25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 44 AI agent skills that enforce these patterns automatically in your editor.
 
 ## Quick Start
 
@@ -97,7 +97,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 
 ## Agent Skills
 
-43 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
+44 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
 
 ### Tier 1: Universal (Any Stack, Any Language)
 
