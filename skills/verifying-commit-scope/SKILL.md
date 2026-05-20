@@ -158,6 +158,26 @@ When reviewing a teammate's commit (or your own before push):
 
 If any of these fail: reset and re-stage rather than amending - amending preserves the bad index state.
 
+## The Post-Commit Divergence (lint-staged stash/restore)
+
+A subtler variant: after a `lint-staged` commit, the **working tree** can disagree with what was **committed**. lint-staged stashes your unstaged changes, runs the auto-formatter (`biome --write` / `prettier --write`) on the staged set, commits the *formatted* version, then restores the stash — and the restore can leave the working tree holding the *un*-formatted version of files the formatter touched.
+
+The trap: you spot a follow-up fix (e.g. a comment typo the formatter doesn't catch), re-stage, and `git commit --amend`. Because the working tree reverted to the pre-format state, the amend **re-introduces the formatting violations** the hook had already fixed — silently undoing CI-clean work.
+
+**Detection:** right after a lint-staged commit, `git diff HEAD -- <files you just committed>` should be empty. If it shows formatting churn (re-wrapped lines, import re-ordering) you didn't make, that's the divergence.
+
+**Fix:** don't amend on top of the diverged tree. Restore from the commit first, then re-apply only your intended change:
+
+```bash
+git checkout HEAD -- <the-files>     # discard the un-formatted working-tree versions
+# re-apply ONLY your intended follow-up edit (the comment fix, etc.)
+git add -- <the-files>
+git diff --cached                    # confirm: ONLY your intended change, no format churn
+git commit --amend --no-verify       # comment-only/format-clean change: skip the hook
+```
+
+`--no-verify` is justified only when the staged content is already formatter-clean and your change can't introduce a violation (e.g. comment/doc text). Otherwise let the hook run.
+
 ## Related Skills
 
 - `verification-before-completion` - same diagnostic mindset, broader scope
