@@ -109,6 +109,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`cross-editor-setup`](skills/cross-editor-setup/) | Setting up AI config for a project | Guides AGENTS.md + CLAUDE.md + Cursor rules setup for multi-agent team compatibility |
 | [`code-review`](skills/code-review/) | Reviewing PRs, checking branch before push, batch quality sweeps | Seven-dimension review (observability, testing, SOLID, type safety, security, business logic, clean code) with pass/fail verdicts and educational findings |
 | [`progressive-disclosure-ctas`](skills/progressive-disclosure-ctas/) | Designing settings/config forms with many optional fields | Hide optional inputs behind "+ Add X" CTAs that reveal inline editors; LivePreview strip narrates current state; Remove is symmetric to Add; no stuck states |
+| [`stale-bot-pr-triage`](skills/stale-bot-pr-triage/) | A bot (Sentry Seer, Dependabot, Renovate, Cursor) opens a fix PR; sweeping a bot-PR backlog; before merging any machine-authored branch | Diff the PR's intent against current main before actioning — they're stale snapshots, often already-fixed (close with the superseding SHA), fixed-better, or regressive (a fix that silently removes a guard). Re-implement genuine value on main against current APIs; never cherry-pick the stale branch |
 
 ### Tier 2: React / Next.js / TypeScript
 
