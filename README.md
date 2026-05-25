@@ -4,7 +4,7 @@
 
 This is the engineering playbook we use every day. It started as a collection of agent skills — reusable rules that teach AI coding assistants how we write code. But the patterns behind those skills are more valuable than the skills themselves. So we wrote them down.
 
-25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 45 AI agent skills that enforce these patterns automatically in your editor.
+25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 46 AI agent skills that enforce these patterns automatically in your editor.
 
 ## Quick Start
 
@@ -97,7 +97,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 
 ## Agent Skills
 
-45 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
+46 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
 
 ### Tier 1: Universal (Any Stack, Any Language)
 
@@ -137,6 +137,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`webhook-architecture`](skills/webhook-architecture/) | Creating webhook handlers | SOLID handler registry, one handler per event, dependency injection, idempotency |
 | [`webhook-patterns`](skills/webhook-patterns/) | Creating webhook routes, adding event handlers | Registry pattern, SRP route handlers, Zod validation, organization resolution service |
 | [`webhook-observability`](skills/webhook-observability/) | Adding logging/tracing to webhooks | Webhook logger lifecycle, duration tracking, idempotency checks, error tracker integration |
+| [`cron-monitor-checkin`](skills/cron-monitor-checkin/) | Adding/auditing a scheduled job (Vercel cron, GitHub Actions schedule, k8s CronJob) wired to a heartbeat monitor (Sentry Crons, Cronitor, Healthchecks.io); a monitor firing "missed check-in"/`monitor_check_in_failure` you can't trace to code | A monitor is only as real as the producer feeding it. Auto-registered monitors with no check-in report a permanent phantom outage that trains the team to ignore alerts. Centralize the `captureCheckIn` lifecycle in one wrapper (auth → in_progress → ok/error), pin the slug to the platform-derived slug, and orphan-audit monitors against jobs. Origin: a single orphaned canary monitor accrued 1,253 false failures |
 | [`auth-webhook-race`](skills/auth-webhook-race/) | Adding tables that mirror auth-provider entities (Clerk, Auth0, WorkOS, Stytch); debugging FK violations on signup; "data missing for new users" reports | Sync-on-first-touch gate in authenticated layouts so the auth provider's webhook is a refresher, not the create path. Eliminates Postgres 23503 races. Includes the ORM `error.cause` unwrap for diagnosis |
 | [`webhook-temporal-guard`](skills/webhook-temporal-guard/) | Webhook payloads carrying a time the action depends on (start_time, scheduled_at, expires_at); calendar webhooks (Nylas, Google, Microsoft); Stripe refund/dispute webhooks; "we sent an email about something that already happened" reports | Validates payload time against `now()` at handler boundary AND service entry (defense in depth). Captures past-time blocks as `level: warning` (not critical) since the input is unfixable. Origin: WorldBranding 2026-05-08 — closer edited a calendar event 17 minutes after start_time, integration "rescheduled" to the past |
 | [`graphql-patterns`](skills/graphql-patterns/) | Adding GraphQL types, mutations, DataLoaders | Shopify-style graph-first design, Relay pagination, semantic types, N+1 prevention |
