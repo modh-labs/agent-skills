@@ -4,7 +4,7 @@
 
 This is the engineering playbook we use every day. It started as a collection of agent skills — reusable rules that teach AI coding assistants how we write code. But the patterns behind those skills are more valuable than the skills themselves. So we wrote them down.
 
-25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 46 AI agent skills that enforce these patterns automatically in your editor.
+25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 47 AI agent skills that enforce these patterns automatically in your editor.
 
 ## Quick Start
 
@@ -97,7 +97,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 
 ## Agent Skills
 
-46 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
+47 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
 
 ### Tier 1: Universal (Any Stack, Any Language)
 
@@ -145,6 +145,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`hono-patterns`](skills/hono-patterns/) | Building Hono REST/GraphQL APIs | CLI workflow, middleware patterns, Zod validation, request testing without server startup |
 | [`monorepo-patterns`](skills/monorepo-patterns/) | Configuring Turborepo, creating packages, CI | Task pipelines, caching strategies, --affected builds, package boundaries, transit nodes |
 | [`bun-workspaces-catalog-hoisting`](skills/bun-workspaces-catalog-hoisting/) | Adding a shared dep to 3+ workspaces; auditing a framework family upgrade (Mastra, Next, React, Drizzle); a "low-risk" version bump that fails with "X not exported by Y" deep in the bundler | Hoists shared deps into `workspaces.catalog` (default) or `workspaces.catalogs.{name}` (named family). Default catalog dedupes plain shared deps; named catalogs structurally lock package families that hard-import each other's internals (Mastra is the worst offender) so partial bumps become impossible. Includes the 4-tier prioritization methodology and the bulk-rewrite Python script |
+| [`source-export-internal-packages`](skills/source-export-internal-packages/) | Adding/auditing a workspace package's build setup; a just-added export not visible to a dependent until rebuild; a package with a `build` script + `dist/` exports consumed only by other buildable apps; a tracked `dist/` in git | Internal-only TS packages should export source (`exports` → `./index.ts`), never a compiled `dist/`. A built artifact goes stale on source edits and can ship outdated types to production (worse when the app build skips `^build` + ignores type errors). Convert to a Turborepo Just-in-Time package; verify by deleting `dist/` and typechecking. Counter-case: published-to-npm or runtime-`require`'d-untranspiled packages genuinely need a build |
 | [`security-and-compliance`](skills/security-and-compliance/) | New tables, auth flows, input validation | RLS enforcement, Zod at boundaries, webhook signatures, GDPR consent, SOC 2 checklist |
 | [`testing`](skills/testing/) | Writing tests | Vitest patterns, Supabase mocking, Playwright page objects, `__tests__/` conventions |
 | [`e2e-testability`](skills/e2e-testability/) | Writing e2e tests, building UI components | Semantic locators (getByRole first), accessible names, flaky test elimination, Page Object fixtures |
