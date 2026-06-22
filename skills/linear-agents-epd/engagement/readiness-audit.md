@@ -115,6 +115,6 @@ or reply with questions. {checkout link}
 ## Notes
 - This runner doubles as Day-0 of the [delivery runbook](delivery-runbook.md): the same read-only pull
   seeds the client install record.
-- A future **self-serve** version (prospect pastes a read-only token into a modh.ca form → automated
-  report) reuses this exact detection logic headlessly against Linear's GraphQL API. Build that only once
-  the manual runner has produced a few reports and the rubric is proven.
+- The headless engine version lives in `audit-runner/` (`runAudit(apiKey)` → `renderMarkdown()`): the
+  same detection logic in code, ready to wrap in a modh.ca self-serve form. Validate the rubric against a
+  few real workspaces with the manual runner before turning on self-serve.
