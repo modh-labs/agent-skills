@@ -1,12 +1,12 @@
-# Agent Guidance — Team level (paste-in)
+# Agent Guidance, Team level (paste-in)
 
 Paste into the **team's** AI / Agent settings (Team Settings → AI & Agents / Triage → Agent behavior).
 Team guidance **overrides** workspace guidance when both exist, so keep this to team-specific routing
-and conventions; don't repeat the workspace rules. One file per team — fill the brackets.
+and conventions; don't repeat the workspace rules. One file per team, fill the brackets.
 
 ---
 
-## Team: `<TEAM KEY>` — <Team name>
+## Team: `<TEAM KEY>`, <Team name>
 
 ### Ownership lanes (route to the right person)
 Suggest the assignee by lane, but leave assignment to a human unless a Triage Rule says otherwise:
@@ -23,7 +23,7 @@ Suggest the assignee by lane, but leave assignment to a human unless a Triage Ru
 - Attach the relevant doc/runbook when one obviously applies.
 
 ### Cycle / planning conventions
-- Cadence: <n>-week cycles. Capacity comes from the last 3 cycles' velocity — don't over-fill.
+- Cadence: <n>-week cycles. Capacity comes from the last 3 cycles' velocity, don't over-fill.
 - Estimates: [enabled? scale?]. Suggest an estimate but don't set it on committed issues without a human.
 - Stale issues: flag issues untouched for <n> days; propose roll-over, don't force it.
 

@@ -8,7 +8,7 @@
 // Auth: a Linear *personal API key* goes in the Authorization header verbatim (no "Bearer"); an OAuth
 // token uses "Bearer <token>". READ-ONLY: this engine never mutates. Give the key Read scope only.
 //
-// Field names are validated against Linear's GraphQL schema as of 2026-06. The API evolves — if a query
+// Field names are validated against Linear's GraphQL schema as of 2026-06. The API evolves, if a query
 // errors, re-check api.linear.app/graphql. Each optional probe is isolated so one failure degrades a
 // single dimension to "confirm" rather than failing the whole audit.
 
@@ -83,7 +83,7 @@ export async function runAudit(apiKey: string): Promise<AuditResult> {
     status: taxScore === 3 ? 'ok' : taxScore >= 1 ? 'partial' : 'missing',
     finding: taxScore === 3 ? 'Grouped Types / Areas / Complexity in place' : `Missing groups: ${[!hasTypes && 'Types', !hasAreas && 'Areas', !hasComplexity && 'Complexity'].filter(Boolean).join(', ')}`,
   })
-  if (taxScore < 3) gaps.push('No structured label taxonomy — agents have nothing reliable to auto-label against')
+  if (taxScore < 3) gaps.push('No structured label taxonomy, agents have nothing reliable to auto-label against')
 
   // --- Foundations: workflow states ---
   const stateTypes = new Set(teams.flatMap(t => t.states.nodes.map(s => s.type)))
@@ -97,7 +97,7 @@ export async function runAudit(apiKey: string): Promise<AuditResult> {
   // --- Foundations: cycles ---
   const cyclesOk = teams.some(t => t.cycles.nodes.length > 0)
   dimensions.push({ name: 'Cycles', status: cyclesOk ? 'ok' : 'missing', finding: cyclesOk ? 'Cycles active' : 'No cycles configured' })
-  if (!cyclesOk) gaps.push('Cycles not in use — no velocity/capacity signal for planning')
+  if (!cyclesOk) gaps.push('Cycles not in use, no velocity/capacity signal for planning')
 
   // --- Installed agents (app users) ---
   const installedAgents = main.users.nodes
@@ -132,7 +132,7 @@ export async function runAudit(apiKey: string): Promise<AuditResult> {
     status: customerStatus,
     finding: customerStatus === 'ok' ? 'Customer requests linked to issues' : customerStatus === 'partial' ? 'Customers exist but no linked requests' : customerStatus === 'missing' ? 'Not in use' : 'Enable customer:read on the key to assess',
   })
-  if (customerStatus === 'partial' || customerStatus === 'missing') gaps.push('Customer asks not captured as structured requests — no path to auto-draft them into issues')
+  if (customerStatus === 'partial' || customerStatus === 'missing') gaps.push('Customer asks not captured as structured requests, no path to auto-draft them into issues')
 
   // --- PM maturity: initiatives (isolated probe) ---
   let initiativesOk = false
@@ -142,8 +142,8 @@ export async function runAudit(apiKey: string): Promise<AuditResult> {
   } catch { /* initiatives unavailable on plan or key */ }
 
   // --- Native AI + automation are settings-gated; not API-detectable ---
-  dimensions.push({ name: 'Native AI (Agent, Guidance, Triage Intelligence)', status: 'confirm', finding: 'Settings-gated — confirm in Settings → AI' + (initiativesOk ? '; PM surface is mature and ready' : '') })
-  dimensions.push({ name: 'Workflow automation (Triage Rules, Automations, SLAs)', status: 'confirm', finding: 'Settings-gated — confirm in Team Settings → Triage' })
+  dimensions.push({ name: 'Native AI (Agent, Guidance, Triage Intelligence)', status: 'confirm', finding: 'Settings-gated, confirm in Settings → AI' + (initiativesOk ? '; PM surface is mature and ready' : '') })
+  dimensions.push({ name: 'Workflow automation (Triage Rules, Automations, SLAs)', status: 'confirm', finding: 'Settings-gated, confirm in Team Settings → Triage' })
 
   // --- Score the current tier (detectable signals only) ---
   const foundationsMissing = dimensions.filter(d => ['Label taxonomy', 'Workflow states', 'Cycles'].includes(d.name) && d.status === 'missing').length
@@ -154,7 +154,7 @@ export async function runAudit(apiKey: string): Promise<AuditResult> {
   const verdict = installedAgents.length
     ? `Agents are in the workspace (${installedAgents.join(', ')}) but they're doing coding/ops, not EPD ops. The gap is the AI + automation layer.`
     : foundationsMissing === 0
-      ? 'Solid foundations, but no agents yet — the whole agent layer is open.'
+      ? 'Solid foundations, but no agents yet, the whole agent layer is open.'
       : 'Foundations need shoring up before agents can be effective.'
 
   return { workspace: main.organization.name, tier, tierName, verdict, dimensions, installedAgents, gaps: gaps.slice(0, 3) }
@@ -166,7 +166,7 @@ const ICON: Record<Status, string> = { ok: '✅', partial: '⚠️', missing: '�
 export function renderMarkdown(r: AuditResult): string {
   const rows = r.dimensions.map(d => `| ${d.name} | ${ICON[d.status]} | ${d.finding} |`).join('\n')
   const gapList = r.gaps.length ? r.gaps.map((g, i) => `${i + 1}. ${g}`).join('\n') : '_No major gaps detected in read-only signals._'
-  return `# Linear Agent Readiness Report — ${r.workspace}
+  return `# Linear Agent Readiness Report, ${r.workspace}
 _Read-only assessment · prepared by Modh_
 
 ## You're at Tier ${r.tier} of 4: ${r.tierName}
@@ -180,13 +180,13 @@ ${rows}
 ${gapList}
 
 ## What an Activation would change
-- **Lite ($6,000)** — Agent Guidance + Triage Intelligence on.
-- **Standard ($8,500)** ← recommended — + customer-ask→issue automation + Triage Rules + SLAs.
-- **Pro ($12,000)** — + one bespoke automation.
+- **Lite ($6,000)**, Agent Guidance + Triage Intelligence on.
+- **Standard ($8,500)** ← recommended, + customer-ask→issue automation + Triage Rules + SLAs.
+- **Pro ($12,000)**, + one bespoke automation.
 Then **Agent Ops** keeps it running and tuned (from $6,000/quarter).
 
 ## Next step
-This audit is free. Book a Standard Activation — first agent output within 48 hours or it's free.
+This audit is free. Book a Standard Activation, first agent output within 48 hours or it's free.
 `
 }
 

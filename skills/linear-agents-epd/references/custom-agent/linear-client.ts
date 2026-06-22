@@ -8,7 +8,7 @@ import crypto from 'node:crypto'
 const LINEAR_GRAPHQL = 'https://api.linear.app/graphql'
 const LINEAR_TOKEN_URL = 'https://api.linear.app/oauth/token'
 
-// Linear's fixed webhook sender IPs — optionally allowlist these at the edge.
+// Linear's fixed webhook sender IPs, optionally allowlist these at the edge.
 export const LINEAR_WEBHOOK_IPS = [
   '35.231.147.226', '35.243.134.228', '34.140.253.14',
   '34.38.87.206', '34.134.222.122', '35.222.25.142',
@@ -16,7 +16,7 @@ export const LINEAR_WEBHOOK_IPS = [
 
 /**
  * Verify Linear-Signature: HMAC-SHA256 of the RAW request body using the webhook signing secret.
- * Verify over the raw bytes — re-stringifying parsed JSON will mismatch. Timing-safe compare.
+ * Verify over the raw bytes, re-stringifying parsed JSON will mismatch. Timing-safe compare.
  */
 export function verifyLinearSignature(rawBody: string, signatureHeader: string | null, secret: string): boolean {
   if (!signatureHeader) return false
@@ -71,7 +71,7 @@ export async function getViewerId(token: string): Promise<string> {
   return data.viewer.id
 }
 
-// Agent Activity content shapes (content varies by type — see agent-interaction docs).
+// Agent Activity content shapes (content varies by type, see agent-interaction docs).
 export type AgentActivityContent =
   | { type: 'thought'; body: string }
   | { type: 'action'; action: string; parameter?: string; result?: string }

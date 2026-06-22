@@ -1,7 +1,7 @@
-# Tier 4 — Custom Linear agent (reference scaffold)
+# Tier 4, Custom Linear agent (reference scaffold)
 
 A minimal, runnable skeleton for an `@mentionable` Linear **app-user agent** on **Vercel + Supabase +
-Claude Agent SDK**. Build this only for the last mile — see the skill's decision tree. Files here are
+Claude Agent SDK**. Build this only for the last mile, see the skill's decision tree. Files here are
 flat for readability; the header comment in each names its destination path in a Next.js App Router app
 (`@/` = project source root).
 
@@ -26,10 +26,10 @@ reasoning. The webhook route does fast, deterministic things (verify, persist, e
 the worker) and returns; the worker runs the long Claude loop and streams activities back.
 
 ## Files
-- `linear-webhook-route.ts` → `app/api/linear-webhook/route.ts` — verify, ack, emit first thought, trigger worker.
-- `agent-worker.ts` → `app/api/linear-agent-run/route.ts` — the Claude Agent SDK loop (set `maxDuration`).
-- `linear-client.ts` → `@/lib/linear.ts` — signature verify, OAuth token exchange, GraphQL, activities.
-- `sessions.ts` → `@/lib/sessions.ts` — Supabase session store + delivery idempotency.
+- `linear-webhook-route.ts` → `app/api/linear-webhook/route.ts`, verify, ack, emit first thought, trigger worker.
+- `agent-worker.ts` → `app/api/linear-agent-run/route.ts`, the Claude Agent SDK loop (set `maxDuration`).
+- `linear-client.ts` → `@/lib/linear.ts`, signature verify, OAuth token exchange, GraphQL, activities.
+- `sessions.ts` → `@/lib/sessions.ts`, Supabase session store + delivery idempotency.
 - `schema.sql` → run in Supabase SQL editor.
 - `.env.example` → `.env`.
 

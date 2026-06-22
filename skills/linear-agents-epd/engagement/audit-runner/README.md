@@ -1,4 +1,4 @@
-# Audit runner — self-serve engine
+# Audit runner, self-serve engine
 
 The headless core of the free Readiness Audit. It runs **read-only** against a Linear workspace and emits
 the buyer-facing gap report. The Claude-run runbook (`../readiness-audit.md`) is the manual version; this
@@ -9,7 +9,7 @@ is the same detection logic in code, so it can power a self-serve form on modh.c
 # A Linear personal API key with READ scope only (Settings → API → Personal API keys)
 LINEAR_API_KEY=lin_api_xxx npx tsx audit.ts
 ```
-Prints the markdown report to stdout. Read-only — it never writes to the workspace.
+Prints the markdown report to stdout. Read-only, it never writes to the workspace.
 
 ## Use it as a library
 ```ts
@@ -31,7 +31,7 @@ const report = renderMarkdown(result)   // buyer-facing markdown
 - **Detectable (API):** label taxonomy (grouped Types/Areas/Complexity), workflow states, cycles,
   installed agents (app users), Customer Requests usage, initiatives/PM maturity.
 - **Not detectable (settings-gated → reported as 🔎 "confirm"):** Linear Agent / Agent Guidance / Triage
-  Intelligence, Triage Rules / Automations / SLAs. These are the upsell surface — the report flags them
+  Intelligence, Triage Rules / Automations / SLAs. These are the upsell surface, the report flags them
   for a quick settings check.
 
 ## Caveats

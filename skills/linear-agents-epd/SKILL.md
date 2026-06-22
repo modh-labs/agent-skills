@@ -1,7 +1,7 @@
 ---
 name: linear-agents-epd
 description: >
-  Set up Linear Agents to absorb EPD ops/admin work for a client — triage,
+  Set up Linear Agents to absorb EPD ops/admin work for a client, triage,
   customer-request structuring, board/project hygiene, status rollups, spec
   drafting, and coding-from-issue. A portable, per-client runbook (a 5-tier
   ladder) with a buy-first decision tree, baked-in guardrails, and a Tier-4
@@ -10,8 +10,8 @@ description: >
 tier: process
 icon: bot
 title: "Linear Agents for EPD Teams"
-seo_title: "Linear Agents for EPD Teams — Modh Engineering Skill"
-seo_description: "Portable per-client playbook for adopting Linear Agents across triage, customer requests, project management, and coding-from-issue — with a buy-first decision tree and guardrails."
+seo_title: "Linear Agents for EPD Teams, Modh Engineering Skill"
+seo_description: "Portable per-client playbook for adopting Linear Agents across triage, customer requests, project management, and coding-from-issue, with a buy-first decision tree and guardrails."
 keywords: ["linear", "agents", "triage", "customer requests", "EPD", "automation", "AI agents"]
 difficulty: intermediate
 related_chapters: []
@@ -25,7 +25,7 @@ Linear workspace. Run it **once per client** (each is a separate workspace with 
 reference implementation is the **Aura** workspace (`aura-app-ai`), which is already at ~Tier 2.
 
 > Facts in this skill were verified against Linear's primary docs/changelog as of **June 2026**. Linear
-> ships fast and the developer Agent API is still labeled "Developer Preview" — re-check
+> ships fast and the developer Agent API is still labeled "Developer Preview", re-check
 > `linear.app/developers/agents` and `linear.app/changelog` before a Tier-4 build. See
 > `references/ecosystem.md` for dated facts + source URLs.
 
@@ -38,16 +38,16 @@ reference implementation is the **Aura** workspace (`aura-app-ai`), which is alr
 
 ## Core Principle
 
-**Delegate, don't abdicate.** In Linear, assigning an issue to an agent is *delegation* — the human
+**Delegate, don't abdicate.** In Linear, assigning an issue to an agent is *delegation*, the human
 stays the responsible assignee and the agent is a contributor. Lean in hard on low-risk, reversible,
 internal work (labeling, dedupe, drafting, summarizing, coding-from-issue); keep a human gate on
 anything **customer-facing or terminal** (replies, closing/cancelling, priority changes, deletes).
-Agents draft and route; humans approve. This is also how Linear's own design works — AI suggestions are
+Agents draft and route; humans approve. This is also how Linear's own design works, AI suggestions are
 opt-in per team, and integration/AI-created issues land in **Triage** until a human accepts them.
 
 ## The strategic answer ("should we go all in?")
 
-**Yes — aggressively, but tiered, and buy-before-build.**
+**Yes, aggressively, but tiered, and buy-before-build.**
 
 - **High-leverage, low-risk (do it):** triage routing/labeling/dedupe, customer-ask → well-formed
   issue, status rollups + project updates, spec/PRD drafting, coding-from-issue. Mostly native or one
@@ -61,7 +61,7 @@ opt-in per team, and integration/AI-created issues land in **Triage** until a hu
 - **Two constraints to confirm per client:** (1) most powerful automation (Triage
   Rules/Intelligence/Automations, SLAs, Insights, Intercom/Zendesk) is **Business/Enterprise**-gated;
   (2) agents are **non-billable** (they don't consume a seat), but **Coding Sessions** burn metered
-  **AI credits** — set a spend cap.
+  **AI credits**, set a spend cap.
 
 ## The 5-tier ladder
 
@@ -70,11 +70,11 @@ verification live in **`references/tiers.md`**.
 
 | Tier | What | Plan | Effort |
 |---|---|---|---|
-| **0 — Foundations** | Triage on; Types/Areas/Complexity labels; Customer Requests; Slack+GitHub+Sentry; Cycles+Estimates | Any | Config |
-| **1 — Native AI** | Linear Agent + **Agent Guidance**; Triage Intelligence (suggest+dedupe, auto-apply opt-in); Pulse + project-update reminders + agent-assisted updates; Code Intelligence | Seat + Business | Config |
-| **2 — Marketplace agents** | Install & delegate: Cursor / **Cyrus (Claude Code)** / Codex / Devin (coding), Sentry·Seer (ops), ChatPRD (product); first-party Coding Sessions | Any (agents non-billable; sessions metered) | Install |
-| **3 — Workflow automation** | Triage **Rules** + **Automations** (ask for missing info, attach docs); Customer Requests "Create with Linear Agent"; SLAs | Business/Enterprise | Config |
-| **4 — Custom EPD agent** | Bespoke `@mentionable` app-user on Vercel + Supabase + Claude Agent SDK | Any (build) | Build |
+| **0, Foundations** | Triage on; Types/Areas/Complexity labels; Customer Requests; Slack+GitHub+Sentry; Cycles+Estimates | Any | Config |
+| **1, Native AI** | Linear Agent + **Agent Guidance**; Triage Intelligence (suggest+dedupe, auto-apply opt-in); Pulse + project-update reminders + agent-assisted updates; Code Intelligence | Seat + Business | Config |
+| **2, Marketplace agents** | Install & delegate: Cursor / **Cyrus (Claude Code)** / Codex / Devin (coding), Sentry·Seer (ops), ChatPRD (product); first-party Coding Sessions | Any (agents non-billable; sessions metered) | Install |
+| **3, Workflow automation** | Triage **Rules** + **Automations** (ask for missing info, attach docs); Customer Requests "Create with Linear Agent"; SLAs | Business/Enterprise | Config |
+| **4, Custom EPD agent** | Bespoke `@mentionable` app-user on Vercel + Supabase + Claude Agent SDK | Any (build) | Build |
 
 ## Decision tree
 
@@ -104,17 +104,17 @@ Full matrix, scope table, and vendor-review checklist in **`references/guardrail
 - **Human-gated:** customer replies, closing/cancelling, priority/date changes, deletes, merges, broad
   re-triage.
 - **Enforced by:** least-privilege OAuth scopes (`issues:create`+`comments:create`, **no `admin`, no
-  delete** — `actor=app` structurally can't request `admin`), team-scoped install, Triage-before-
+  delete**, `actor=app` structurally can't request `admin`), team-scoped install, Triage-before-
   workflow, opt-in auto-apply, per-team Agent Guidance, the "prevent guests interacting with agents"
   toggle, Enterprise third-party-app approvals where available, and a **per-client vendor security
   review** (a third-party agent's token can write across its teams; Linear's SOC2/GDPR covers Linear,
-  not the vendor). Audit log is Enterprise-only — below that, rely on activity history +
+  not the vendor). Audit log is Enterprise-only, below that, rely on activity history +
   `PermissionChange` webhooks.
 
 ## Per-client run procedure
 
 1. **Switch to the client's workspace.** Use that client's Linear key (`clients/<client>/.mcp.json`).
-   The connected MCP in modh sessions is **Aura's** — confirm before acting.
+   The connected MCP in modh sessions is **Aura's**, confirm before acting.
 2. **Confirm plan tier** (Free/Basic/Business/Enterprise). It decides which tiers are reachable
    (`references/tiers.md`).
 3. **Audit current state** read-only: `list_teams`, `list_issue_statuses`, `list_issue_labels`,
@@ -137,33 +137,39 @@ Full matrix, scope table, and vendor-review checklist in **`references/guardrail
 - **Tier 4 (if built):** run `references/custom-agent` behind Hookdeck/ngrok → delegate a test issue →
   assert HMAC verified, 200 ack <5s, first `thought` <10s, activities render, a Supabase row is
   written; then deploy to Vercel and re-test on a sandbox team.
-- **Portability:** repeat Tier 0–1 on a second workspace (Hyran/Modh) to prove transfer.
+- **Portability:** repeat Tier 0-1 on a second workspace (Hyran/Modh) to prove transfer.
 
 ## References
 
-- `references/tiers.md` — Tier 0–4 checklists, plan-gating, verification.
-- `references/guardrails.md` — autonomy matrix, OAuth scope table, vendor review, cost governance.
-- `references/ecosystem.md` — native AI features + marketplace agents, dated facts + sources.
-- `references/agent-guidance-workspace.md` / `agent-guidance-team.md` — paste-in Linear Agent Guidance.
-- `references/client-install-record.md` — per-client audit record template.
-- `references/custom-agent/` — Tier-4 reference implementation (webhook + worker + Supabase schema).
+- `references/tiers.md`, Tier 0-4 checklists, plan-gating, verification.
+- `references/guardrails.md`, autonomy matrix, OAuth scope table, vendor review, cost governance.
+- `references/ecosystem.md`, native AI features + marketplace agents, dated facts + sources.
+- `references/agent-guidance-workspace.md` / `agent-guidance-team.md`, paste-in Linear Agent Guidance.
+- `references/client-install-record.md`, per-client audit record template.
+- `references/custom-agent/`, Tier-4 reference implementation (webhook + worker + Supabase schema).
 
 ### Productized offer ("out of the box consulting")
 The playbook above is the delivery engine for a packaged consulting offer. The sellable assets:
-- `engagement/readiness-audit.md` — the free, read-only qualifier: Claude audits a prospect's Linear and
+- `engagement/readiness-audit.md`, the free, read-only qualifier: Claude audits a prospect's Linear and
   emits a tiered gap report that upsells the Activation. Top of the funnel.
-- `engagement/activation-sprint-sow.md` — fixed-scope SOW: one-time **Activation Sprint** (installs
-  Tiers 0–3) + the recurring **Agent Ops** managed-service retainer, with tiers, prices, and guarantee.
-- `engagement/delivery-runbook.md` — the turnkey, day-by-day delivery process (operator vs agent steps,
+- `engagement/activation-sprint-sow.md`, fixed-scope SOW: one-time **Activation Sprint** (installs
+  Tiers 0-3) + the recurring **Agent Ops** managed-service retainer, with tiers, prices, and guarantee.
+- `engagement/delivery-runbook.md`, the turnkey, day-by-day delivery process (operator vs agent steps,
   acceptance checklist) so every engagement runs identically.
-- `engagement/one-pager.md` — buyer-facing pitch + public good/better/best pricing.
+- `engagement/one-pager.md`, buyer-facing pitch + public good/better/best pricing.
+- `engagement/positioning.md`, the differentiation thesis: why operating judgment (not the wiring) is
+  the product, and how specific experience maps to encoded value vs a generic generalist.
+- `engagement/sop-library.md`, the granular offering: the 9 SOPs the agents run and the operator
+  supervises (triage, customer-request→spec, incident management, status rollups, autonomy promotion,
+  monthly review, security review, spec quality). Each tagged with the standard it enforces.
 
 Run the delivery-runbook to fulfill a Sprint; the Sprint converts into the Agent Ops retainer, which is
-the rung that scales (agents do the labor → ~90% margin, decoupled from operator hours).
+the rung that scales (agents do the labor → ~90% margin, decoupled from operator hours). The moat is
+operator judgment encoded into the SOPs/guardrails, not the agent wiring (`positioning.md`).
 
 ## Related
 
-- `linear-tickets` — ticket-quality standard the agents should produce against.
-- `webhook-architecture` / `webhook-patterns` — SOLID handler design for the Tier-4 webhook route.
-- `oauth-callback-pattern` — server-side OAuth handling for the agent install flow.
-- `supabase-patterns` — schema/RLS for the session store.
+- `linear-tickets`, ticket-quality standard the agents should produce against.
+- `webhook-architecture` / `webhook-patterns`, SOLID handler design for the Tier-4 webhook route.
+- `oauth-callback-pattern`, server-side OAuth handling for the agent install flow.
+- `supabase-patterns`, schema/RLS for the session store.

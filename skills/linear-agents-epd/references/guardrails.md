@@ -1,9 +1,9 @@
-# Guardrails — autonomy, scopes, vendor review, cost
+# Guardrails, autonomy, scopes, vendor review, cost
 
 Default posture: **safe-auto, gated-risk.** Agents act autonomously on low-blast-radius, reversible,
 internal work and draft/route everything else for a human to approve. Much of this is enforced by
 Linear's design (delegation keeps a human owner; AI suggestions are opt-in; Triage holds new work), not
-left to convention — but you still choose scopes, auto-apply, and which vendors to trust.
+left to convention, but you still choose scopes, auto-apply, and which vendors to trust.
 
 ## Autonomy matrix
 
@@ -19,13 +19,13 @@ left to convention — but you still choose scopes, auto-apply, and which vendor
   team to auto-apply only after it has watched the suggestions and trusts them.
 - **Assignment = delegation.** The human assignee stays accountable. Design automations so terminal
   actions (close, customer reply) require the human, not the agent.
-- **Updates are drafts.** Agent-assisted project/status updates are written "for you to refine" — keep
+- **Updates are drafts.** Agent-assisted project/status updates are written "for you to refine", keep
   the publish step human.
 
 ## Least-privilege OAuth scopes (for installed + custom agents)
 
 Request the **narrowest** scopes that work. `actor=app` installs **structurally cannot request
-`admin`** — agents can't sign in, manage users, billing, or security settings regardless of build.
+`admin`**, agents can't sign in, manage users, billing, or security settings regardless of build.
 
 | Scope | Grants | Use it? |
 |---|---|---|
@@ -36,11 +36,11 @@ Request the **narrowest** scopes that work. `actor=app` installs **structurally 
 | `app:mentionable` | be `@mentioned` in issues/docs/editors | required for a mentionable agent |
 | `customer:read` / `initiative:read` (+`:write`) | customer requests / initiatives | only if the workflow needs them |
 | `write` | full write to user-accessible data | avoid unless genuinely needed |
-| *(delete)* | delete issues/comments/attachments | **never grant** — prefer no delete capability at all |
+| *(delete)* | delete issues/comments/attachments | **never grant**, prefer no delete capability at all |
 | `admin` | admin endpoints | **never** (and `actor=app` can't request it anyway) |
 
 Also: **scope each agent to specific teams** at install. A personal API key (for scripts) can be
-restricted to teams and to a Read/Create-issues/Create-comments subset — use that for anything that
+restricted to teams and to a Read/Create-issues/Create-comments subset, use that for anything that
 isn't a true interactive agent.
 
 ## Per-client vendor security review (before installing any third-party agent)
@@ -49,7 +49,7 @@ A third-party agent is a third-party OAuth app whose token can create/edit issue
 the teams you grant it. Linear's SOC 2 Type II / GDPR / HIPAA posture and "no training on your data"
 guarantee cover **Linear**, not the agent vendor. For each agent:
 
-- [ ] Who owns it? (the directory generally lists apps "built by formal companies" — confirm.)
+- [ ] Who owns it? (the directory generally lists apps "built by formal companies", confirm.)
 - [ ] What scopes + which teams does it request? Decline `write`/`admin`/delete it doesn't need.
 - [ ] Vendor data handling: where does your issue data go, sub-processors, retention, DPA, does it
       train on your data?
@@ -61,7 +61,7 @@ guarantee cover **Linear**, not the agent vendor. For each agent:
 ## Visibility & revocation
 
 - **Install/suspend**: admins install agents (Settings → Applications) and can suspend/revoke at any
-  time (Settings → Members). Revocation fires a `PermissionChange` webhook (e.g. `teamAccessChanged`) —
+  time (Settings → Members). Revocation fires a `PermissionChange` webhook (e.g. `teamAccessChanged`),
   the agent can detect it and you can audit it.
 - **Attribution**: agent actions show under the agent's avatar/name; an `actor=app` agent can render
   actions as "User (via App)" via `createAsUser` + `displayIconUrl` to tie automation to a human name.
@@ -73,12 +73,12 @@ guarantee cover **Linear**, not the agent vendor. For each agent:
 
 ## Cost governance
 
-- **Agents are non-billable** — they don't consume a Linear seat. Add as many as you want.
+- **Agents are non-billable**, they don't consume a Linear seat. Add as many as you want.
 - **Coding Sessions burn metered AI credits** (prepaid, workspace-pooled, USD; min $10 top-up; expire
-  12 months after purchase; non-refundable). ~$0.50 styling / ~$3–5 small bug / $5+ complex; **failed
+  12 months after purchase; non-refundable). ~$0.50 styling / ~$3-5 small bug / $5+ complex; **failed
   runs and retries are billable**.
 - **Gap:** admins currently **cannot restrict which members spend** AI credits. Mitigate with an
   automatic-reload threshold (a cap, not a floor), the guest toggle, and a periodic spend review logged
   in the install record.
-- **Marketplace agents** are billed by each vendor (e.g. coding agents per-seat/per-run) — track in the
+- **Marketplace agents** are billed by each vendor (e.g. coding agents per-seat/per-run), track in the
   install record.

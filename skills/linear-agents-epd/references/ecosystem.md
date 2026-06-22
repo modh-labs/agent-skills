@@ -1,12 +1,12 @@
-# Ecosystem — what's available (verified June 2026)
+# Ecosystem, what's available (verified June 2026)
 
 Facts below were verified against Linear's primary docs/changelog and the agents directory in June
-2026. Re-check before relying on anything dated — the developer Agent API is still **Developer
+2026. Re-check before relying on anything dated, the developer Agent API is still **Developer
 Preview**. Source URLs are listed per section.
 
 ## How agents work in Linear (mechanics)
 
-- An agent is an **"app user"** — installed via OAuth with **`actor=app`**, it appears as a real
+- An agent is an **"app user"**, installed via OAuth with **`actor=app`**, it appears as a real
   workspace member: `@mentionable`, delegatable via assignment, can comment/collaborate. Installed and
   managed by **admins**; **non-billable**.
 - **Assignment = delegation.** The human stays the primary assignee/owner; the agent is an additional
@@ -52,16 +52,16 @@ Install (admin), pick teams, then `@mention`/delegate. All third-party, built on
   formatting + test plans), Reflag (feature flags), cto.new, CellCog, Testifly.
 - The directory shows no beta/waitlist flags on agent cards.
 
-## Where Claude fits (three paths — no native Anthropic agent)
+## Where Claude fits (three paths, no native Anthropic agent)
 
 There is **no** Anthropic-published "Claude" agent assignable inside Linear. Claude reaches Linear via:
 
 1. **As the engine behind first-party Coding Sessions** (Linear runs Claude Code + Codex under the hood).
-2. **As a third-party agent via Cyrus** — open-source runner (`github.com/cyrusagents/cyrus`) that
+2. **As a third-party agent via Cyrus**, open-source runner (`github.com/cyrusagents/cyrus`) that
    registers **Claude Code** as an assignable/mentionable agent; watches delegated issues, runs Claude
    Code in per-issue worktrees, streams activities back. Fastest way to get "Claude in Linear" with no
    custom backend.
-3. **As an MCP client from your terminal** — add Linear's MCP to Claude Code:
+3. **As an MCP client from your terminal**, add Linear's MCP to Claude Code:
    `claude mcp add --transport http linear-server https://mcp.linear.app/mcp` then `/mcp` to auth. This
    drives Linear *from* Claude Code; it does **not** make Claude appear as an in-Linear teammate.
 - Sources: `linear.app/integrations/claude`, `linear.app/integrations/cyrus`, `linear.app/docs/mcp`.

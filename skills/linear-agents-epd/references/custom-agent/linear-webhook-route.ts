@@ -23,7 +23,7 @@ interface AgentSessionEvent {
 }
 
 export async function POST(req: Request): Promise<Response> {
-  // 1. Verify over the RAW body — never re-stringify parsed JSON.
+  // 1. Verify over the RAW body, never re-stringify parsed JSON.
   const raw = await req.text()
   const signature = req.headers.get('linear-signature')
   if (!verifyLinearSignature(raw, signature, process.env.LINEAR_WEBHOOK_SECRET!)) {
@@ -58,8 +58,8 @@ export async function POST(req: Request): Promise<Response> {
       claude_session_id: null,
       status: 'active',
     })
-    // Immediate, unobtrusive feedback — satisfies the 10s first-activity SLA before the slow worker runs.
-    await createAgentActivity(token, sessionId, { type: 'thought', body: 'On it — reviewing the issue and context…' })
+    // Immediate, unobtrusive feedback, satisfies the 10s first-activity SLA before the slow worker runs.
+    await createAgentActivity(token, sessionId, { type: 'thought', body: 'On it, reviewing the issue and context…' })
   }
 
   // 3. Fire the worker without blocking the ack. On Vercel, call the fluid-compute worker route.

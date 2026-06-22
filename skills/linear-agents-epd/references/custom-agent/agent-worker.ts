@@ -29,7 +29,7 @@ export async function runAgent(linearSessionId: string): Promise<void> {
 
   try {
     // Build the task prompt from the issue/session context you persisted (and previousComments from
-    // the webhook). Keep the agent scoped to drafting/organizing — terminal actions stay human-gated.
+    // the webhook). Keep the agent scoped to drafting/organizing, terminal actions stay human-gated.
     const prompt = buildPrompt(session)
 
     const stream = query({
@@ -81,7 +81,7 @@ function buildPrompt(session: { issue_id: string | null }): string {
   return [
     'You are a delegated Linear agent. Flesh out and organize the work on this issue.',
     'Produce a draft (title, problem, who is affected, proposed change, acceptance criteria) and suggest labels.',
-    'Do NOT take terminal actions (close/cancel, change priority, customer replies) — leave those for the human owner.',
+    'Do NOT take terminal actions (close/cancel, change priority, customer replies), leave those for the human owner.',
     session.issue_id ? `Linear issue id: ${session.issue_id}` : '',
   ]
     .filter(Boolean)

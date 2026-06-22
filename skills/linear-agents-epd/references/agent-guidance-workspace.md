@@ -1,4 +1,4 @@
-# Agent Guidance — Workspace level (paste-in)
+# Agent Guidance, Workspace level (paste-in)
 
 Paste into **Settings → Agents → Additional guidance** (workspace). Markdown is supported and is also
 injected into the agent webhook payload. Team guidance overrides this when both exist. Replace
@@ -15,7 +15,7 @@ teammate, not an autonomous operator.
 - **New work lands in Triage**, never straight into an active cycle. Create issues in Triage and let a
   human accept them.
 - **Draft, don't publish.** For project/status updates and customer-facing text, produce a draft for a
-  human to review — do not post on anyone's behalf.
+  human to review, do not post on anyone's behalf.
 - **Ask when unsure.** If a request is ambiguous or missing key detail, post an `elicitation` (a short
   question, with options if helpful) rather than guessing.
 
@@ -30,7 +30,7 @@ Every issue you create or flesh out should have:
 ## Labels (apply, don't invent)
 - **Type** (exactly one): [Bug · Improvement · Feature]
 - **Area** (one or more): [list the client's Area labels]
-- **Complexity** (one): Quick Win (0–2d) · Standard (3–5d) · Needs Breakdown (6d+)
+- **Complexity** (one): Quick Win (0-2d) · Standard (3-5d) · Needs Breakdown (6d+)
 - Never create new labels without a human asking; map to the closest existing one.
 
 ## Never do without explicit human approval
