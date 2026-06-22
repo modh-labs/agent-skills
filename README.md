@@ -4,7 +4,7 @@
 
 This is the engineering playbook we use every day. It started as a collection of agent skills — reusable rules that teach AI coding assistants how we write code. But the patterns behind those skills are more valuable than the skills themselves. So we wrote them down.
 
-25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 47 AI agent skills that enforce these patterns automatically in your editor.
+25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 49 AI agent skills that enforce these patterns automatically in your editor.
 
 ## Quick Start
 
@@ -97,7 +97,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 
 ## Agent Skills
 
-47 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
+49 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
 
 ### Tier 1: Universal (Any Stack, Any Language)
 
@@ -111,6 +111,8 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`progressive-disclosure-ctas`](skills/progressive-disclosure-ctas/) | Designing settings/config forms with many optional fields | Hide optional inputs behind "+ Add X" CTAs that reveal inline editors; LivePreview strip narrates current state; Remove is symmetric to Add; no stuck states |
 | [`stale-bot-pr-triage`](skills/stale-bot-pr-triage/) | A bot (Sentry Seer, Dependabot, Renovate, Cursor) opens a fix PR; sweeping a bot-PR backlog; before merging any machine-authored branch | Diff the PR's intent against current main before actioning — they're stale snapshots, often already-fixed (close with the superseding SHA), fixed-better, or regressive (a fix that silently removes a guard). Re-implement genuine value on main against current APIs; never cherry-pick the stale branch |
 | [`surface-upstream-errors`](skills/surface-upstream-errors/) | A `catch` around an external SDK/API call (Stripe, Clerk, auth/payment/calendar/email providers); logging just `error.message`; before calling a provider's bulk/batch endpoint | Parse the provider's structured error (status, code, longMessage, trace id) instead of flattening to "Please try again" — surface the real reason in the UI, tag observability by the upstream code, and fingerprint by it so failure modes don't collapse into one opaque bucket. Corollary: pre-filter known conflicts before atomic bulk endpoints so one bad item can't fail the batch |
+| [`pii-redaction-parity`](skills/pii-redaction-parity/) | Adding a second log/trace sink; declaring a PII posture ("id + org only"); writing a redact/scrub/beforeSend config; "email in logs even though Sentry scrubbed it" | Enforce ONE sensitive-key list across every egress path (Sentry events/spans/logs + structured-logger redact). Covers the counterintuitive pino flat-dotted key trap — a key named "user.email" is matched only by the path `["user.email"]`, not `"user.email"` — and fixing leaks at the source (stop emitting PII onto spans) not just the sink |
+| [`error-report-dedup`](skills/error-report-dedup/) | A capture-and-rethrow wrapper (span/critical-path/retry) nested inside an outer catch that also captures; duplicate tracker issues for one failure | Tag the Error with a non-enumerable `Symbol.for` marker so the second handler skips a duplicate event. Headline bug: the marker is identity-bound, so the inner producer must rethrow the SAME normalized+marked Error, not the raw original. Test both producer and consumer sides |
 
 ### Tier 2: React / Next.js / TypeScript
 
