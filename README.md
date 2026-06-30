@@ -4,7 +4,7 @@
 
 This is the engineering playbook we use every day. It started as a collection of agent skills — reusable rules that teach AI coding assistants how we write code. But the patterns behind those skills are more valuable than the skills themselves. So we wrote them down.
 
-25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 50 AI agent skills that enforce these patterns automatically in your editor.
+25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 53 AI agent skills that enforce these patterns automatically in your editor.
 
 ## Quick Start
 
@@ -97,7 +97,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 
 ## Agent Skills
 
-50 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
+53 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
 
 ### Tier 1: Universal (Any Stack, Any Language)
 
@@ -107,6 +107,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`internal-tools-design`](skills/internal-tools-design/) | Building admin panels, dashboards, ops tools | Optimizes for scannability and data density over visual impact — monospace numbers, dark mode, CSS-only transitions |
 | [`output-enforcement`](skills/output-enforcement/) | Any code generation task | Bans `// ...`, `// TODO`, truncation patterns — forces complete, production-ready output |
 | [`cross-editor-setup`](skills/cross-editor-setup/) | Setting up AI config for a project | Guides AGENTS.md + CLAUDE.md + Cursor rules setup for multi-agent team compatibility |
+| [`provision-live-to-learn-contract`](skills/provision-live-to-learn-contract/) | Scripting create/update against an API (dashboards, webhooks, resources) whose field/enum shape you're inferring; a dry-run that can't validate acceptance | Stop guessing from docs — make ONE real, reversible call and let the error body teach you the exact contract (a single 400 named the transactions→spans deprecation). A green dry-run/typecheck validates only your code, never the server's acceptance |
 | [`code-review`](skills/code-review/) | Reviewing PRs, checking branch before push, batch quality sweeps | Seven-dimension review (observability, testing, SOLID, type safety, security, business logic, clean code) with pass/fail verdicts and educational findings |
 | [`progressive-disclosure-ctas`](skills/progressive-disclosure-ctas/) | Designing settings/config forms with many optional fields | Hide optional inputs behind "+ Add X" CTAs that reveal inline editors; LivePreview strip narrates current state; Remove is symmetric to Add; no stuck states |
 | [`stale-bot-pr-triage`](skills/stale-bot-pr-triage/) | A bot (Sentry Seer, Dependabot, Renovate, Cursor) opens a fix PR; sweeping a bot-PR backlog; before merging any machine-authored branch | Diff the PR's intent against current main before actioning — they're stale snapshots, often already-fixed (close with the superseding SHA), fixed-better, or regressive (a fix that silently removes a guard). Re-implement genuine value on main against current APIs; never cherry-pick the stale branch |
@@ -136,6 +137,8 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`supabase-patterns`](skills/supabase-patterns/) | Database queries, migrations, RLS | Repository pattern, schema-first workflow, RLS policies, type generation |
 | [`observability`](skills/observability/) | Adding logging, error tracking, tracing | Structured logger factory, Sentry integration, domain capture functions, webhook observability |
 | [`write-criticality`](skills/write-criticality/) | Adding error handling for DB writes, retry logic | Three-tier write classification (tracking/retriable/critical), transient retry, alarm severity matching |
+| [`observability-cost-quota`](skills/observability-cost-quota/) | A perf/RUM dashboard is empty, traces/spans "stopped", "no recent performance data", or you're about to raise a telemetry bill | Observability is a metered cost with a silent failure mode: errors flowing + spans/logs at zero = quota exhaustion, not an outage (categories meter separately). Diagnose via usage-by-outcome×category; FIX ORDER = cut low-value high-frequency emission first (child spans inherit the parent's sampling), THEN add headroom — so a tiny budget covers it instead of a money pit |
+| [`dark-gate-flip-readiness`](skills/dark-gate-flip-readiness/) | Replacing a hot computed/derived read with a cheaper persisted-or-SQL projection; moving status/scoring/rollup derivation into SQL; any "same results, faster read" rewrite | Ship dark behind a default-off flag with the old path as fallback; pin the new path to the source of truth with an automated parity check + a drift invariant + a bounded keyset-streamed backfill; flip on a canary. The one question: "if the new path disagrees for one row, what turns red?" |
 | [`webhook-architecture`](skills/webhook-architecture/) | Creating webhook handlers | SOLID handler registry, one handler per event, dependency injection, idempotency |
 | [`webhook-patterns`](skills/webhook-patterns/) | Creating webhook routes, adding event handlers | Registry pattern, SRP route handlers, Zod validation, organization resolution service |
 | [`webhook-observability`](skills/webhook-observability/) | Adding logging/tracing to webhooks | Webhook logger lifecycle, duration tracking, idempotency checks, error tracker integration |
