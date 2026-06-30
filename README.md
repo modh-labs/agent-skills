@@ -4,7 +4,7 @@
 
 This is the engineering playbook we use every day. It started as a collection of agent skills — reusable rules that teach AI coding assistants how we write code. But the patterns behind those skills are more valuable than the skills themselves. So we wrote them down.
 
-25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 50 AI agent skills that enforce these patterns automatically in your editor.
+25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 52 AI agent skills that enforce these patterns automatically in your editor.
 
 ## Quick Start
 
@@ -97,7 +97,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 
 ## Agent Skills
 
-50 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
+52 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
 
 ### Tier 1: Universal (Any Stack, Any Language)
 
@@ -128,6 +128,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`middleware-cookie-fast-path`](skills/middleware-cookie-fast-path/) | Edge-cached page needs request-scoped client data (geo, timezone, AB variant, feature flag); tracking script gated behind client-side consent check; N components firing duplicate `/api/*` requests | Stamps client-readable cookie in middleware so client reads synchronously, eliminating post-hydration fetch waterfalls — reference incident was a 34-second mobile Meta Pixel fire on Slow 3G |
 | [`navigate-before-dismiss`](skills/navigate-before-dismiss/) | Click handlers that both call `router.push` and close a Radix dismissable (Dialog/Sheet/Popover/CommandDialog/DropdownMenu); "I click the result, popup closes, URL never changes" bug reports; cmdk `asChild` + Next.js `<Link>` shapes | Reorders push-before-dismiss with `queueMicrotask` so Radix's synchronous unmount no longer cancels the intercepted Next.js navigation mid-event; collapses dual `onSelect` + `onClick` handlers via `preventDefault` while preserving anchor `href` for middle-click and copy-link |
 | [`control-flow-exceptions`](skills/control-flow-exceptions/) | `try/catch` around a server action, Server Component, or route handler in Next.js App Router; "I see NEXT_REDIRECT in the toast" bug reports; a redirect that "sometimes doesn't happen" after a successful action | `redirect()` / `notFound()` throw control-flow signals, not failures — a naive `catch` swallows the signal, cancels the navigation, and renders the internal digest string to the user. Mandates `unstable_rethrow(error)` as the first line of any catch that wraps redirectable code; includes the server-wrapper digest-detection guard and a regression-test recipe |
+| [`overlay-z-index-ladder`](skills/overlay-z-index-ladder/) | Two overlays open at once (hover-card + menu, tooltip + popover); a menu/submenu rendering UNDER another floating element; a dropdown opened inside a dialog appearing beneath it; adding a portal/popover component or auditing a design system's layering | Body-portaled overlays share one stacking context, so the higher z-index wins regardless of DOM order. Maintain one documented tier ladder (sheet → dialog → floating content → toast), keep every floating primitive in the shared floating tier (so a `<select>` works inside a dialog), and make actionable overlays outrank passive ones. Includes the ladder, the actionable-beats-passive rule, and the trapped-stacking-context (ancestor transform/overflow) gotcha |
 
 ### Tier 3: Backend / Infrastructure
 
@@ -155,6 +156,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`code-quality-audit`](skills/code-quality-audit/) | Auditing routes/modules for quality | Detect parallel systems, SOLID compliance, dead code removal, production data validation |
 | [`type-cast-silent-bugs`](skills/type-cast-silent-bugs/) | Type-tightening migrations (Drizzle, ORM swap, schema rename); audits that grep for `as any` / `as unknown as` / `useState<any[]>`; "this dashboard's been silently broken for months" investigations | Reframes type-assertion casts on DB query results as silent-bug indicators rather than type-safety nits — the cast almost always hides column/table drift the type system would otherwise catch. Origin: Aura 2026-05-16 admin Drizzle sweep surfaced 11 silently-broken dashboards (calibration: ~1 silent bug per 9 casts). Includes the diagnostic question, three cast patterns to audit, and the in-scope-fix discipline that prevents follow-up-ticket erosion |
 | [`github-ci-efficiency-audit`](skills/github-ci-efficiency-audit/) | "Make CI cheaper/faster without burning minutes"; a CI/Actions billing surprise; hardening a repo/org; a green pipeline that still merges red; `--affected` reding unrelated PRs | Two-question audit (which jobs run on metered runners + how often + is the every-PR install cached; does a red check actually block merge). Finds metered stragglers among third-party runners (Blacksmith/Depot), the dominant high-frequency cron, and the uncached every-PR install. Applies merge-hygiene + secret-scanning + Dependabot + CODEOWNERS via the `gh` CLI. Covers the required-checks ordering trap (don't require CI until the branch is PR-only) and the `--affected` traps that red unrelated PRs: `always()` coverage steps ENOENT-ing, base-ref fallback running everything, a broken base file reding every PR's merge-ref build, and `gh run rerun` replaying the stale merge commit |
+| [`dedup-key-completeness`](skills/dedup-key-completeness/) | Writing an upsert/onConflict target, a unique constraint, or a "have we seen this already?" window; "my second booking/order/ticket disappeared or merged into the first" reports; reviewing idempotency on a create path that can fire twice | A dedup/idempotency guard must key on EVERY dimension that makes two records legitimately distinct — a missing dimension silently collapses separate records into one (a lost write with no error, no log). Keep true-retry idempotency (a unique upstream id) separate from fuzzy ±N-second near-duplicate windows; handle null key dimensions deliberately. Includes the diagnostic question, decision tree, CORRECT/WRONG examples, and an audit checklist |
 
 ### Tier 4: Workflow / Process
 
