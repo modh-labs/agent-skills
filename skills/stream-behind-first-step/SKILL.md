@@ -82,9 +82,13 @@ function BookingWizard({ slotsPromise }: Props) {
   const [slots, setSlots] = useState<Slots | null>(null);
   useEffect(() => {
     let active = true;
-    slotsPromise
-      .then((r) => { if (active) setSlots(r); })
-      .catch(() => { if (active) setSlots(null); }); // defensive; treat as empty
+    // Promise.resolve() + two-arg then — NOT `.then().catch()`. See the
+    // RSC-thenable trap below: a server-passed promise is a minimal thenable
+    // whose `.then()` returns undefined, so chaining `.catch` throws in prod.
+    Promise.resolve(slotsPromise).then(
+      (r) => { if (active) setSlots(r); },
+      () => { if (active) setSlots(null); }, // defensive; treat as empty
+    );
     return () => { active = false; };
   }, [slotsPromise]);
 
@@ -92,6 +96,21 @@ function BookingWizard({ slotsPromise }: Props) {
   // once it arrives, behind a localized stencil.
 }
 ```
+
+> **⚠️ RSC-thenable trap (the way this bites in production).** A promise passed
+> from a Server Component to a Client Component does **not** arrive as a normal
+> `Promise`. It's React's minimal "usable" thenable: it implements
+> `then(onFulfilled, onRejected)` but `.then()` returns `undefined`, so
+> `slotsPromise.then(...).catch(...)` reads `.catch` on `undefined` and throws
+> **`Cannot read properties of undefined (reading 'catch')`** — crashing the page
+> into its error boundary. It passes every unit test and Storybook story, because
+> those inject a real `Promise` (whose `.then()` *does* return a chainable
+> promise). Two safe forms: **`Promise.resolve(promise).then(onF, onR)`** (no
+> `.catch` chain), or just **`use(promise)`** inside a pushed-down `<Suspense>`
+> (Option B), which consumes the thenable natively. `await promise` is also safe
+> (it calls the two-arg `then` internally). **Verify on a running dev server, not
+> just the test suite** — the dev server serializes the real RSC thenable; jsdom
+> tests do not, so this class of bug is invisible to green CI.
 
 ```tsx
 // ✓ Option B — push the boundary down to only the subtree that needs it
@@ -174,6 +193,16 @@ async function onStepComplete() {
 }
 ```
 
+### ✗ `.then(...).catch(...)` on the server-passed promise
+
+```tsx
+useEffect(() => {
+  slotsPromise.then(setSlots).catch(() => setSlots(null)); // 🔴 ".then()" returns
+  // undefined on React's RSC thenable → ".catch" of undefined → throws in prod,
+  // passes every test (tests pass a real Promise). Use Promise.resolve(...).then(onF, onR).
+}, [slotsPromise]);
+```
+
 ### ✗ "Fix" the latency with a client-side refetch
 
 ```tsx
@@ -199,7 +228,9 @@ Reviewing a multi-step client flow fed by a server-prefetched promise:
 - [ ] The step→step transition derives from a freshly **awaited** snapshot, not a closed-over memo
 - [ ] A single pure helper computes the view shape for both the steady-state memo and the transition
 - [ ] Exactly one upstream call — no client-side refetch
+- [ ] The server-passed promise is consumed via `use()` or `Promise.resolve(p).then(onF, onR)` / `await` — never `p.then(...).catch(...)` (RSC thenable has no chainable `.then`)
 - [ ] Mount effects (timezone/locale/analytics/focus) verified to run during step 1, not after the data lands
+- [ ] **Verified on a running dev server, not just unit tests** — the dev server serializes the real RSC thenable; jsdom tests inject a plain `Promise` and miss thenable-shape bugs
 - [ ] Tail case covered by a test: step 1 completed before the fetch settles → still routes correctly
 
 ## Generalizes To
