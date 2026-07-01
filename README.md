@@ -4,7 +4,7 @@
 
 This is the engineering playbook we use every day. It started as a collection of agent skills — reusable rules that teach AI coding assistants how we write code. But the patterns behind those skills are more valuable than the skills themselves. So we wrote them down.
 
-25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 56 AI agent skills that enforce these patterns automatically in your editor.
+25 chapters across 7 sections. Each chapter covers one pattern: the problem it solves, the principle behind it, the concrete implementation, and why it matters to the business. We also ship 57 AI agent skills that enforce these patterns automatically in your editor.
 
 ## Quick Start
 
@@ -97,7 +97,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 
 ## Agent Skills
 
-56 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
+57 AI agent skills that enforce these patterns automatically. Compatible with Claude Code, Cursor, GitHub Copilot, Windsurf, and OpenAI Codex.
 
 ### Tier 1: Universal (Any Stack, Any Language)
 
@@ -134,6 +134,7 @@ How we build interfaces. Server Components by default. Client boundaries pushed 
 | [`control-flow-exceptions`](skills/control-flow-exceptions/) | `try/catch` around a server action, Server Component, or route handler in Next.js App Router; "I see NEXT_REDIRECT in the toast" bug reports; a redirect that "sometimes doesn't happen" after a successful action | `redirect()` / `notFound()` throw control-flow signals, not failures — a naive `catch` swallows the signal, cancels the navigation, and renders the internal digest string to the user. Mandates `unstable_rethrow(error)` as the first line of any catch that wraps redirectable code; includes the server-wrapper digest-detection guard and a regression-test recipe |
 | [`overlay-z-index-ladder`](skills/overlay-z-index-ladder/) | Two overlays open at once (hover-card + menu, tooltip + popover); a menu/submenu rendering UNDER another floating element; a dropdown opened inside a dialog appearing beneath it; adding a portal/popover component or auditing a design system's layering | Body-portaled overlays share one stacking context, so the higher z-index wins regardless of DOM order. Maintain one documented tier ladder (sheet → dialog → floating content → toast), keep every floating primitive in the shared floating tier (so a `<select>` works inside a dialog), and make actionable overlays outrank passive ones. Includes the ladder, the actionable-beats-passive rule, and the trapped-stacking-context (ancestor transform/overflow) gotcha |
 | [`stream-behind-first-step`](skills/stream-behind-first-step/) | A multi-step client flow (wizard, booking form, checkout) consumes a slow server-prefetched promise via `use()` at the top of the component; first step shows a full-screen skeleton for a slow upstream (availability/search/recommendations); a "slow load" and an unrelated-looking post-load "snap"/double-render reported together | Don't suspend the whole component on data only a later step needs — top-level `use()` blocks the first interactive step (and defers its mount effects, which surfaces as a "double load"). Background-resolve the promise (effect → state) so step 1 paints now and the data streams in behind a localized stencil during the user's dwell; derive the step→step transition from a freshly AWAITED snapshot (not the closed-over memo, empty in the tail) via a pure helper shared with the steady-state render; keep a single upstream call |
+| [`headless-form-engine`](skills/headless-form-engine/) | A form/wizard needs a second presentation (all-at-once → stepped/Typeform, modal → page, desktop → mobile); a designer asks to make an existing form "feel like Typeform"; reviewing a PR that adds a second form component reimplementing the first one's validation | One headless controller owns state, validation, and submit, exposed through an EXPLICIT named interface (never inferred) — every presentation is a pure consumer, zero controller edits per new layout (OCP). A state-shape projection (e.g. a step model) is validated at one boundary via a discriminated union, making illegal shapes unrepresentable. The load-bearing deliverable is a parity test: identical inputs → both presentations → byte-identical submit payload, exactly one submit call — covering a gated/consent step, not just the happy path |
 
 ### Tier 3: Backend / Infrastructure
 
